@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet add:*)",
+      "Bash(dotnet build:*)",
+      "Bash(del PortalAutomation\\UnitTest1.cs:*)",
+      "Bash(pwsh:*)",
+      "WebFetch(domain:uat-dimension.calance.us)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
