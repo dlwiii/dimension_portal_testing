@@ -13,7 +13,9 @@
       "Bash(git push:*)",
       "Bash(dotnet test:*)",
       "Bash(export PORTAL_USERNAME=\"dlwiii\")",
-      "Bash(export PORTAL_PASSWORD=\"daniel314Pi$\")"
+      "Bash(export PORTAL_PASSWORD=\"daniel314Pi$\")",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet restore:*)"
     ],
     "deny": [],
     "ask": []
