@@ -25,6 +25,10 @@ public class LoginPage : PageBase
     private const string LoginButtonSelector = "button[type='submit']";
     private const string ErrorMessageSelector = ".error-message, .alert-danger, [role='alert']";
 
+    // NOTE: There is also a Procore login button: class="Login_procoreBtn__rsoGh btn btn-primary btn-lg"
+    // This provides SSO login via Procore. Not currently tested.
+    // private const string ProcoreLoginButtonSelector = ".Login_procoreBtn__rsoGh";
+
     public LoginPage(IPage page) : base(page)
     {
     }

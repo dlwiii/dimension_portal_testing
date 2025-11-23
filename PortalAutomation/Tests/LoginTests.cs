@@ -9,11 +9,14 @@ namespace PortalAutomation.Tests;
 ///
 /// Credentials are read from environment variables: PORTAL_USERNAME and PORTAL_PASSWORD
 ///
-/// Login flow:
+/// Login flow (Standard Login):
 /// 1. User enters credentials on /login page
 /// 2. After successful authentication:
 ///    - If "use_company_id" is checked → navigates to /run
 ///    - If "use_company_id" is NOT checked → navigates to /login_company
+///
+/// Note: The login page also has a "Sign in with Procore" button for SSO login.
+/// Procore SSO login is not currently tested.
 /// </summary>
 public class LoginTests : TestBase
 {

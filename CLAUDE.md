@@ -61,14 +61,21 @@ If environment variables are not set, tests will fail with a clear error message
 
 ## Dimension Portal Login Flow
 
-The Dimension portal has a conditional post-login behavior:
+The Dimension portal supports two login methods:
 
+### 1. Standard Login (Currently Tested)
 1. User enters credentials on the main login page (`/login`)
 2. After successful authentication, the portal navigates to one of two pages:
    - **`/run`** - If the "use_company_id" checkbox IS checked on the login form
    - **`/login_company`** - If the "use_company_id" checkbox is NOT checked (company selection page)
 
 **Important**: When writing tests that verify successful login, account for both possible URLs. The `LoginPage.IsLoggedInAsync()` method already handles this by checking for either destination.
+
+### 2. Procore SSO Login (Not Currently Tested)
+The login page also includes a "Sign in with Procore" button:
+- **Selector**: `class="Login_procoreBtn__rsoGh btn btn-primary btn-lg"`
+- **Purpose**: Provides single sign-on (SSO) authentication via Procore
+- **Status**: Not currently automated. Tests use standard username/password login only.
 
 ## Architecture
 
