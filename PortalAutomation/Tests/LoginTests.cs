@@ -6,7 +6,14 @@ namespace PortalAutomation.Tests;
 
 /// <summary>
 /// Test class for Dimension portal login functionality.
+///
 /// Credentials are read from environment variables: PORTAL_USERNAME and PORTAL_PASSWORD
+///
+/// Login flow:
+/// 1. User enters credentials on /login page
+/// 2. After successful authentication:
+///    - If "use_company_id" is checked → navigates to /run
+///    - If "use_company_id" is NOT checked → navigates to /login_company
 /// </summary>
 public class LoginTests : TestBase
 {
@@ -38,6 +45,10 @@ public class LoginTests : TestBase
 
         var currentUrl = Page!.Url;
         Console.WriteLine($"Logged in successfully. Current URL: {currentUrl}");
+
+        // Note: URL will be either /login_company or /run depending on "use_company_id" checkbox state
+        (currentUrl.Contains("/login_company") || currentUrl.Contains("/run"))
+            .Should().BeTrue("because login should navigate to either company selection or run page");
     }
 
     [Fact]

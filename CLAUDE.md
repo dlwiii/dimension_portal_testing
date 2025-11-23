@@ -59,6 +59,17 @@ private static string GetUsername() =>
 
 If environment variables are not set, tests will fail with a clear error message indicating which variable is missing.
 
+## Dimension Portal Login Flow
+
+The Dimension portal has a conditional post-login behavior:
+
+1. User enters credentials on the main login page (`/login`)
+2. After successful authentication, the portal navigates to one of two pages:
+   - **`/run`** - If the "use_company_id" checkbox IS checked on the login form
+   - **`/login_company`** - If the "use_company_id" checkbox is NOT checked (company selection page)
+
+**Important**: When writing tests that verify successful login, account for both possible URLs. The `LoginPage.IsLoggedInAsync()` method already handles this by checking for either destination.
+
 ## Architecture
 
 ### Page Object Model Structure
