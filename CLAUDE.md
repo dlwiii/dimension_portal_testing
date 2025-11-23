@@ -27,6 +27,13 @@ This is a C# test automation framework using Playwright and xUnit to test web po
   pwsh PortalAutomation/bin/Debug/net10.0/playwright.ps1 codegen <url>
   ```
 
+### Exploration Tools
+- **Page Explorer Script** (`explore.csx`):
+  ```bash
+  dotnet script explore.csx
+  ```
+  Opens browser and lists all input/button elements with their attributes. Useful for finding selectors when creating new page objects.
+
 ### Package Management
 - **Add package**: `dotnet add PortalAutomation/PortalAutomation.csproj package <PackageName>`
 - **Restore packages**: `dotnet restore`

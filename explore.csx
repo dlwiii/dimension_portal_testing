@@ -1,6 +1,31 @@
 #!/usr/bin/env dotnet-script
 #r "nuget: Microsoft.Playwright, 1.56.0"
 
+// ============================================================================
+// Playwright Page Explorer Script
+// ============================================================================
+// This script opens a browser and inspects all input and button elements
+// on a page, printing their attributes to help identify selectors.
+//
+// Requirements:
+//   dotnet tool install -g dotnet-script
+//
+// Usage:
+//   dotnet script explore.csx
+//
+// What it does:
+//   1. Opens Chromium browser (visible UI)
+//   2. Navigates to the Dimension portal
+//   3. Lists all inputs (id, name, type, placeholder, class)
+//   4. Lists all buttons (id, type, class, text)
+//   5. Keeps browser open for manual inspection
+//
+// Use this when:
+//   - Adding new page objects and need to find selectors
+//   - Page structure changes and selectors need updating
+//   - Exploring new pages in the portal
+// ============================================================================
+
 using Microsoft.Playwright;
 
 var playwright = await Playwright.CreateAsync();

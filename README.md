@@ -136,6 +136,35 @@ dotnet test --filter "Category=Smoke"
    }
    ```
 
+## Utility Scripts
+
+### Page Explorer Script (`explore.csx`)
+
+A C# script for quickly inspecting page elements and finding selectors.
+
+**Install dotnet-script** (one-time setup):
+```bash
+dotnet tool install -g dotnet-script
+```
+
+**Run the explorer**:
+```bash
+dotnet script explore.csx
+```
+
+**What it does**:
+- Opens browser to the Dimension portal
+- Lists all input fields with their attributes (id, name, type, placeholder, class)
+- Lists all buttons with their attributes (id, type, class, text)
+- Keeps browser open for manual inspection
+
+**When to use**:
+- Creating new page objects and need to find selectors
+- Page structure changes and selectors need updating
+- Exploring new pages you haven't automated yet
+
+**To explore a different page**: Edit line 35 in `explore.csx` to change the URL.
+
 ## Configuration
 
 Edit `Config/appsettings.json` to customize:
