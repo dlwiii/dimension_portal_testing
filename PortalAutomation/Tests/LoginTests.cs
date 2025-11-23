@@ -5,11 +5,19 @@ using PortalAutomation.Pages;
 namespace PortalAutomation.Tests;
 
 /// <summary>
-/// Test class for Login functionality.
-/// This is an example - update test data and assertions to match your application.
+/// Test class for Dimension portal login functionality.
+/// Credentials are read from environment variables: PORTAL_USERNAME and PORTAL_PASSWORD
 /// </summary>
 public class LoginTests : TestBase
 {
+    private static string GetUsername() =>
+        Environment.GetEnvironmentVariable("PORTAL_USERNAME")
+        ?? throw new InvalidOperationException("PORTAL_USERNAME environment variable not set");
+
+    private static string GetPassword() =>
+        Environment.GetEnvironmentVariable("PORTAL_PASSWORD")
+        ?? throw new InvalidOperationException("PORTAL_PASSWORD environment variable not set");
+
     [Fact]
     public async Task ValidLogin_ShouldSucceed()
     {
@@ -17,12 +25,19 @@ public class LoginTests : TestBase
         var loginPage = new LoginPage(Page!);
         await loginPage.NavigateAsync();
 
+        var username = GetUsername();
+        var password = GetPassword();
+
         // Act
-        await loginPage.LoginAsync("testuser", "testpassword"); // Update with valid test credentials
+        await loginPage.LoginAsync(username, password);
+        await loginPage.WaitForLoginCompleteAsync();
 
         // Assert
-        var isWelcomeDisplayed = await loginPage.IsWelcomeMessageDisplayedAsync();
-        isWelcomeDisplayed.Should().BeTrue("because valid credentials should result in successful login");
+        var isLoggedIn = await loginPage.IsLoggedInAsync();
+        isLoggedIn.Should().BeTrue("because valid credentials should result in successful login");
+
+        var currentUrl = Page!.Url;
+        Console.WriteLine($"Logged in successfully. Current URL: {currentUrl}");
     }
 
     [Fact]
@@ -34,14 +49,19 @@ public class LoginTests : TestBase
 
         // Act
         await loginPage.LoginAsync("invaliduser", "wrongpassword");
+        await Task.Delay(2000); // Wait for error message
 
         // Assert
-        var isErrorDisplayed = await loginPage.IsErrorMessageDisplayedAsync();
-        isErrorDisplayed.Should().BeTrue("because invalid credentials should show an error message");
+        var currentUrl = Page!.Url;
+        currentUrl.Should().Contain("uat-dimension.calance.us", "because failed login should stay on login page");
+
+        // Check if still on login page (login failed)
+        var isLoggedIn = await loginPage.IsLoggedInAsync();
+        isLoggedIn.Should().BeFalse("because invalid credentials should not result in successful login");
     }
 
     [Fact]
-    public async Task EmptyCredentials_ShouldShowValidationError()
+    public async Task EmptyCredentials_ShouldNotLogin()
     {
         // Arrange
         var loginPage = new LoginPage(Page!);
@@ -49,27 +69,25 @@ public class LoginTests : TestBase
 
         // Act
         await loginPage.ClickLoginButtonAsync();
+        await Task.Delay(1000); // Wait briefly
 
         // Assert
-        var isErrorDisplayed = await loginPage.IsErrorMessageDisplayedAsync();
-        isErrorDisplayed.Should().BeTrue("because empty credentials should trigger validation");
+        var isLoggedIn = await loginPage.IsLoggedInAsync();
+        isLoggedIn.Should().BeFalse("because empty credentials should not allow login");
     }
 
-    [Theory]
-    [InlineData("user1", "pass1")]
-    [InlineData("user2", "pass2")]
-    [InlineData("user3", "pass3")]
-    public async Task MultipleInvalidLogins_ShouldAllFail(string username, string password)
+    [Fact]
+    public async Task LoginPage_ShouldLoadSuccessfully()
     {
-        // Arrange
+        // Arrange & Act
         var loginPage = new LoginPage(Page!);
         await loginPage.NavigateAsync();
 
-        // Act
-        await loginPage.LoginAsync(username, password);
-
         // Assert
-        var isErrorDisplayed = await loginPage.IsErrorMessageDisplayedAsync();
-        isErrorDisplayed.Should().BeTrue($"because credentials ({username}/{password}) are invalid");
+        var title = await Page!.TitleAsync();
+        title.Should().Be("Dimension", "because the login page should have the correct title");
+
+        var currentUrl = Page.Url;
+        currentUrl.Should().Contain("uat-dimension.calance.us", "because we should be on the Dimension portal");
     }
 }

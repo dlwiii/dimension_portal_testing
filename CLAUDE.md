@@ -31,6 +31,34 @@ This is a C# test automation framework using Playwright and xUnit to test web po
 - **Add package**: `dotnet add PortalAutomation/PortalAutomation.csproj package <PackageName>`
 - **Restore packages**: `dotnet restore`
 
+## Credentials and Environment Variables
+
+**CRITICAL**: Never store credentials in code or configuration files.
+
+### Required Environment Variables
+- `PORTAL_USERNAME` - Username for Dimension portal login
+- `PORTAL_PASSWORD` - Password for Dimension portal login
+
+### Setting Environment Variables
+```powershell
+# PowerShell (temporary, current session only)
+$env:PORTAL_USERNAME = "your_username"
+$env:PORTAL_PASSWORD = "your_password"
+
+# Then run tests
+dotnet test
+```
+
+### In Tests
+Tests access credentials via `Environment.GetEnvironmentVariable()`:
+```csharp
+private static string GetUsername() =>
+    Environment.GetEnvironmentVariable("PORTAL_USERNAME")
+    ?? throw new InvalidOperationException("PORTAL_USERNAME environment variable not set");
+```
+
+If environment variables are not set, tests will fail with a clear error message indicating which variable is missing.
+
 ## Architecture
 
 ### Page Object Model Structure

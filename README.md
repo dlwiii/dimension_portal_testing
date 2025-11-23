@@ -30,12 +30,23 @@ PortalAutomation/
 
 ## Setup
 
-1. **Restore NuGet packages**:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/dlwiii/dimension_portal_testing.git
+   cd dimension_portal_testing
+   ```
+
+2. **Restore NuGet packages**:
    ```bash
    dotnet restore
    ```
 
-2. **Install Playwright browsers**:
+3. **Build the project**:
+   ```bash
+   dotnet build
+   ```
+
+4. **Install Playwright browsers**:
    ```bash
    pwsh PortalAutomation/bin/Debug/net10.0/playwright.ps1 install
    ```
@@ -45,15 +56,31 @@ PortalAutomation/
    .\PortalAutomation\bin\Debug\net10.0\playwright.ps1 install
    ```
 
-3. **Update configuration**:
-   - Edit `PortalAutomation/Config/appsettings.json`
-   - Set your portal's base URL
-   - Configure test credentials (use environment variables for sensitive data in CI/CD)
+5. **Set environment variables for credentials** (REQUIRED):
 
-4. **Update page objects**:
-   - Edit `PortalAutomation/Pages/LoginPage.cs`
-   - Update selectors to match your application's HTML structure
-   - Update URLs to match your portal
+   **Windows (PowerShell)**:
+   ```powershell
+   $env:PORTAL_USERNAME = "your_username"
+   $env:PORTAL_PASSWORD = "your_password"
+   ```
+
+   **Windows (Command Prompt)**:
+   ```cmd
+   set PORTAL_USERNAME=your_username
+   set PORTAL_PASSWORD=your_password
+   ```
+
+   **Linux/Mac**:
+   ```bash
+   export PORTAL_USERNAME=your_username
+   export PORTAL_PASSWORD=your_password
+   ```
+
+   **For permanent storage (Windows)**:
+   - Open System Properties > Environment Variables
+   - Add `PORTAL_USERNAME` and `PORTAL_PASSWORD` as User or System variables
+
+   **IMPORTANT**: Never commit credentials to the repository. Always use environment variables.
 
 ## Running Tests
 

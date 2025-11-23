@@ -4,20 +4,19 @@ using PortalAutomation.Helpers;
 namespace PortalAutomation.Pages;
 
 /// <summary>
-/// Page object for the Login page.
-/// This is an example - update selectors to match your actual application.
+/// Page object for the Dimension portal login page.
 /// </summary>
 public class LoginPage : PageBase
 {
     // Page URL
-    private const string PageUrl = "https://your-portal-url.com/login"; // Update with actual URL
+    private const string PageUrl = "https://uat-dimension.calance.us";
 
-    // Locators (update these to match your application's HTML structure)
-    private const string UsernameInputSelector = "input[name='username']";
-    private const string PasswordInputSelector = "input[name='password']";
+    // Locators - Dimension portal login page
+    private const string UsernameInputSelector = "#user_id";
+    private const string PasswordInputSelector = "#password";
     private const string LoginButtonSelector = "button[type='submit']";
-    private const string ErrorMessageSelector = ".error-message";
-    private const string WelcomeMessageSelector = ".welcome-message";
+    private const string ErrorMessageSelector = ".error-message, .alert-danger, [role='alert']";
+    private const string DashboardSelector = "text=/dashboard|home|welcome/i"; // Adjust based on actual post-login page
 
     public LoginPage(IPage page) : base(page)
     {
@@ -82,10 +81,24 @@ public class LoginPage : PageBase
     }
 
     /// <summary>
-    /// Check if welcome message is displayed (indicates successful login).
+    /// Check if logged in successfully by verifying URL changed from initial login page.
     /// </summary>
-    public async Task<bool> IsWelcomeMessageDisplayedAsync()
+    public async Task<bool> IsLoggedInAsync()
     {
-        return await IsVisibleAsync(WelcomeMessageSelector);
+        // Wait a moment for navigation to complete
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        // Check if URL changed from initial login page
+        // After successful login, it goes to /login_company (company selection page)
+        var currentUrl = Page.Url;
+        return currentUrl != PageUrl && !currentUrl.EndsWith("/login");
+    }
+
+    /// <summary>
+    /// Wait for login to complete and verify success.
+    /// </summary>
+    public async Task WaitForLoginCompleteAsync(int timeout = 10000)
+    {
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle, new() { Timeout = timeout });
     }
 }

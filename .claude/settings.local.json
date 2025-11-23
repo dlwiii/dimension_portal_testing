@@ -8,7 +8,12 @@
       "WebFetch(domain:uat-dimension.calance.us)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(dotnet test:*)",
+      "Bash(export PORTAL_USERNAME=\"dlwiii\")",
+      "Bash(export PORTAL_PASSWORD=\"daniel314Pi$\")"
     ],
     "deny": [],
     "ask": []
